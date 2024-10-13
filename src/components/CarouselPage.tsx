@@ -38,7 +38,7 @@ const CarouselPage = () => {
 		[api]
 	);
 	return (
-		<div>
+		<>
 			<Carousel
 				opts={{
 					loop: true,
@@ -146,7 +146,7 @@ const CarouselPage = () => {
 											</div>
 										</div>
 										<div className="flex items-center p-4">
-											<figure className="overflow-hidden rounded-md min-w-48 h-full">
+											<figure className="overflow-hidden rounded-md min-w-48 max-w-96 h-full">
 												<a href="/">
 													<img
 														src={image.src}
@@ -178,7 +178,7 @@ const CarouselPage = () => {
 					/>
 				))}
 			</div>
-		</div>
+		</>
 	);
 };
 
