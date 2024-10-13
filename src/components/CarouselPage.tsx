@@ -60,7 +60,12 @@ const CarouselPage = () => {
 										<div>
 											<div className="mb-2">
 												<h2 className="text-2xl font-semibold">
-													Solo Leveling
+													<a
+														href="/"
+														className="hover:text-blue-400 transition-colors duration-200"
+													>
+														Solo Leveling
+													</a>
 												</h2>
 												<p>
 													<Star className="w-5 h-5 text-yellow-400 inline-block mr-1" />
@@ -142,11 +147,13 @@ const CarouselPage = () => {
 										</div>
 										<div className="flex items-center p-4">
 											<figure className="overflow-hidden rounded-md min-w-48 h-full">
-												<img
-													src={image.src}
-													alt="carousel"
-													className="object-cover object-center w-full h-full"
-												/>
+												<a href="/">
+													<img
+														src={image.src}
+														alt="carousel"
+														className="object-cover object-center w-full h-full"
+													/>
+												</a>
 											</figure>
 										</div>
 									</div>
