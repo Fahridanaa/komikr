@@ -30,10 +30,10 @@ const NavigationBar: React.FC<Props> = ({ logo, items, isAuth = true }) => {
 					href="/"
 					className="flex items-center gap-2 text-lg font-semibold md:text-base"
 				>
-					<img src={logo} alt="Logo" className="h-6 w-6" />
-					<span className="sr-only">Logo</span>
+					<img src={logo} alt="Komikr" className="h-6 w-6" />
+					<span className="sr-only">Komikr</span>
 				</a>
-				<ul className="flex gap-4">
+				<ul className="flex ml-6 gap-4">
 					{items.map((item) => (
 						<li key={item.name}>
 							<a
@@ -95,9 +95,15 @@ const NavigationBar: React.FC<Props> = ({ logo, items, isAuth = true }) => {
 				{isAuth ? (
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
-							<Button variant="secondary" size="icon" className="rounded-full">
+							<Button
+								variant="secondary"
+								size="icon"
+								className="rounded-full"
+							>
 								<CircleUser className="h-5 w-5" />
-								<span className="sr-only">Toggle user menu</span>
+								<span className="sr-only">
+									Toggle user menu
+								</span>
 							</Button>
 						</DropdownMenuTrigger>
 						<DropdownMenuContent align="end">
