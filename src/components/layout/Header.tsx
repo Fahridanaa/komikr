@@ -3,8 +3,8 @@ import NavigationBar from "../NavigationBar";
 const Header = () => {
 	const navItems = [
 		{ name: "Home", href: "/" },
+		{ name: "List", href: "/list" },
 		{ name: "Genre", href: "/genre" },
-		{ name: "Contact", href: "/contact" },
 	];
 
 	return (
