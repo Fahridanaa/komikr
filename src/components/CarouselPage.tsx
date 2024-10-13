@@ -19,16 +19,24 @@ const CarouselPage = () => {
 	const [count, setCount] = React.useState(0);
 
 	React.useEffect(() => {
-		if (!api) {
-			return;
-		}
+		if (!api) return;
 
 		setCount(api.scrollSnapList().length);
 		setCurrent(api.selectedScrollSnap());
 
+		const autoSlideInterval = setInterval(() => {
+			if (api.canScrollNext()) {
+				api.scrollNext();
+			} else {
+				api.scrollTo(0);
+			}
+		}, 8000);
+
 		api.on("select", () => {
 			setCurrent(api.selectedScrollSnap());
 		});
+
+		return () => clearInterval(autoSlideInterval);
 	}, [api]);
 
 	const handleDotClick = React.useCallback(
@@ -39,13 +47,7 @@ const CarouselPage = () => {
 	);
 	return (
 		<>
-			<Carousel
-				opts={{
-					loop: true,
-				}}
-				setApi={setApi}
-				className="hidden w-full md:block"
-			>
+			<Carousel setApi={setApi} className="hidden w-full md:block">
 				<CarouselContent>
 					{images.map((image, index) => (
 						<CarouselItem key={index}>
