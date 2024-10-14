@@ -7,32 +7,12 @@ import Layout from "./Layout.astro";
 	<div class="hero-section">
 		<CarouselPage client:load />
 	</div>
-	<div class="main-section">
-		<div id="content">
+	<div class="relative flex gap-8 p-10 justify-center">
+		<div class="relative flex-[3] overflow-x-hidden">
 			<slot />
 		</div>
-		<aside id="aside">
+		<aside class="relative flex-1">
 			<h1>This is Aside!!</h1>
 		</aside>
 	</div>
 </Layout>
-<style>
-	.main-section {
-		position: relative;
-		display: flex;
-		gap: 32px;
-		padding: 40px;
-		justify-content: center;
-	}
-
-	#content {
-		position: relative;
-		flex: 3;
-		overflow-x: hidden;
-	}
-
-	#aside {
-		position: relative;
-		flex: 1;
-	}
-</style>
