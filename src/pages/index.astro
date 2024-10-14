@@ -1,39 +1,12 @@
 ---
 import "@/styles/global.css";
-import Layout from "../layouts/Layout.astro";
 import CarouselPage from "../components/CarouselPage";
+import SliderSection from "@/components/SliderSection";
+import HomeLayout from "@/layouts/HomeLayout.astro";
 ---
 
-<Layout title="Komikr - Tempat Baca Komik">
-	<div class="hero-section">
-		<CarouselPage client:load />
-	</div>
-	<div class="main-section">
-		<div id="content">
-			<h1>Hello, World!</h1>
-		</div>
-		<aside id="aside">
-			<h1>This is Aside!!</h1>
-		</aside>
-	</div>
-</Layout>
-<style>
-	.main-section {
-		position: relative;
-		display: flex;
-		gap: 32px;
-		padding: 40px;
-		justify-content: center;
-	}
-
-	#content {
-		position: relative;
-		flex: 3;
-		overflow-x: hidden;
-	}
-
-	#aside {
-		position: relative;
-		flex: 1;
-	}
-</style>
+<HomeLayout>
+	<SliderSection client:idle>
+		<h1>Hello,World!</h1>
+	</SliderSection>
+</HomeLayout>

@@ -1,0 +1,38 @@
+---
+import CarouselPage from "@/components/CarouselPage";
+import Layout from "./Layout.astro";
+---
+
+<Layout title="Komikr - Tempat Baca Komik">
+	<div class="hero-section">
+		<CarouselPage client:load />
+	</div>
+	<div class="main-section">
+		<div id="content">
+			<slot />
+		</div>
+		<aside id="aside">
+			<h1>This is Aside!!</h1>
+		</aside>
+	</div>
+</Layout>
+<style>
+	.main-section {
+		position: relative;
+		display: flex;
+		gap: 32px;
+		padding: 40px;
+		justify-content: center;
+	}
+
+	#content {
+		position: relative;
+		flex: 3;
+		overflow-x: hidden;
+	}
+
+	#aside {
+		position: relative;
+		flex: 1;
+	}
+</style>
