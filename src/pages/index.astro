@@ -1,12 +1,16 @@
 ---
 import "@/styles/global.css";
-import CarouselPage from "../components/CarouselPage";
 import SliderSection from "@/components/SliderSection";
 import HomeLayout from "@/layouts/HomeLayout.astro";
+import ComicCard from "@/components/ComicCard.astro";
 ---
 
 <HomeLayout>
 	<SliderSection client:idle>
-		<h1>Hello,World!</h1>
+		<ComicCard />
+		<ComicCard />
+		<ComicCard />
+		<ComicCard />
+		<ComicCard />
 	</SliderSection>
 </HomeLayout>

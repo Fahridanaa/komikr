@@ -1,5 +1,6 @@
 ---
-import { Card, CardHeader, CardTitle } from "./ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import cek from "@/assets/kaoruko-waguri.jpg";
 
 // interface Props {
 // 	title: string;
@@ -10,8 +11,28 @@ import { Card, CardHeader, CardTitle } from "./ui/card";
 // const { href, title, body } = Astro.props;
 ---
 
-<Card>
-	<CardHeader>
-		<CardTitle>CEK</CardTitle>
+<Card className="max-w-48 border-0 shadow-none">
+	<CardHeader className="relative p-0">
+		<figure class="rounded-md overflow-hidden">
+			<img src={cek.src} alt="CEK" />
+		</figure>
+		<div class="absolute bg-blue-400 rounded-md right-3 top-1 px-1 py-1">
+			<span class="text-white font-medium">Manga</span>
+		</div>
+		<CardTitle className="text-center">Kaoruko Waguri</CardTitle>
 	</CardHeader>
+	<CardContent className="p-0 mt-4">
+		<a href="/">
+			<div class="flex flex-row justify-between">
+				<p class="text-sm font-medium">Chapter 10</p>
+				<p class="text-sm text-gray-400">20 hours</p>
+			</div>
+		</a>
+		<a>
+			<div class="flex flex-row justify-between">
+				<p class="text-sm font-medium">Chapter 11</p>
+				<p class="text-sm text-gray-400">8 days</p>
+			</div>
+		</a>
+	</CardContent>
 </Card>
