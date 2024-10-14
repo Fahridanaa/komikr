@@ -13,17 +13,23 @@ import cek from "@/assets/kaoruko-waguri.jpg";
 
 <Card className="max-w-48 border-0 shadow-none">
 	<CardHeader className="relative p-0">
-		<figure class="rounded-md overflow-hidden cursor-pointer group">
-			<img
-				src={cek.src}
-				alt="CEK"
-				class="transition-scale duration-200 ease-in-out group-hover:scale-110"
-			/>
-		</figure>
-		<div class="absolute bg-blue-400 rounded-md right-3 top-1 px-1 py-1">
-			<span class="text-white font-medium">Manga</span>
-		</div>
-		<CardTitle className="text-center">Kaoruko Waguri</CardTitle>
+		<a href="/" class="group">
+			<figure class="rounded-md overflow-hidden cursor-pointer">
+				<img
+					src={cek.src}
+					alt="CEK"
+					class="transition-scale duration-200 ease-in-out group-hover:scale-110"
+				/>
+			</figure>
+			<div
+				class="absolute bg-blue-400 rounded-md right-3 top-1 px-1 py-1">
+				<span class="text-white font-medium">Manga</span>
+			</div>
+			<CardTitle
+				className="text-center mt-2 group-hover:text-blue-400 transition-colors ease-in-out duration-200"
+				>Kaoruko Waguri</CardTitle
+			>
+		</a>
 	</CardHeader>
 	<CardContent className="flex flex-col gap-1 p-0 mt-4">
 		<a href="/">
