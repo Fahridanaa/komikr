@@ -1,18 +1,17 @@
 ---
 import CarouselPage from "@/components/CarouselPage";
 import Layout from "./Layout.astro";
+import PopularAside from "@/components/PopularAside.astro";
 ---
 
 <Layout title="Komikr - Tempat Baca Komik">
 	<div class="hero-section">
 		<CarouselPage client:load />
 	</div>
-	<div class="relative flex gap-8 justify-center">
+	<div class="relative flex gap-1 justify-center">
 		<div class="relative flex-[3] overflow-x-hidden">
 			<slot />
 		</div>
-		<aside class="relative flex-1">
-			<h1>This is Aside!!</h1>
-		</aside>
+		<PopularAside />
 	</div>
 </Layout>
