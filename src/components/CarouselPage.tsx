@@ -46,8 +46,8 @@ const CarouselPage = () => {
 		[api]
 	);
 	return (
-		<>
-			<Carousel setApi={setApi} className="hidden w-full md:block">
+		<div className="hidden w-full md:block">
+			<Carousel setApi={setApi}>
 				<CarouselContent>
 					{images.map((image, index) => (
 						<CarouselItem key={index}>
@@ -180,7 +180,7 @@ const CarouselPage = () => {
 					/>
 				))}
 			</div>
-		</>
+		</div>
 	);
 };
 

@@ -2,14 +2,27 @@
 import CarouselPage from "@/components/CarouselPage";
 import Layout from "./Layout.astro";
 import PopularAside from "@/components/PopularAside";
+import ComicCard from "@/components/ComicCard.astro";
+import SliderSection from "@/components/SliderSection";
 ---
 
 <Layout title="Komikr - Tempat Baca Komik">
 	<div class="hero-section">
 		<CarouselPage client:load />
+		<SliderSection client:idle>
+			<ComicCard />
+			<ComicCard />
+			<ComicCard />
+			<ComicCard />
+			<ComicCard />
+			<ComicCard />
+			<ComicCard />
+			<ComicCard />
+			<ComicCard />
+		</SliderSection>
 	</div>
 	<div class="relative flex gap-4 justify-center">
-		<div class="relative flex-[3] overflow-x-hidden">
+		<div class="relative flex-[2] overflow-x-hidden">
 			<slot />
 		</div>
 		<PopularAside client:idle />

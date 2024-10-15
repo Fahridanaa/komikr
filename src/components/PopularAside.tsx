@@ -5,7 +5,7 @@ import cek from "@/assets/kaoruko-waguri.jpg";
 
 export default function PopularAside() {
 	return (
-		<aside className="hidden min-w-72 relative flex-1 md:block">
+		<aside className="hidden max-w-72 relative flex-1 md:block">
 			<h2 className="text-xl font-medium mb-1">Popular</h2>
 			<Tabs defaultValue="weekly">
 				<TabsList className="grid w-full grid-cols-3 mb-1">

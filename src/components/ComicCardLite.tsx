@@ -7,7 +7,7 @@ const ComicCardLite = ({ ranking, comic }) => {
 				</span>
 			</div>
 			<div className="mx-4 flex gap-1">
-				<figure className="flex-1 overflow-hidden rounded-md w-20 h-20">
+				<figure className="flex-1 overflow-hidden rounded-md w-24 h-24">
 					<img
 						src={comic.src}
 						alt="comic"
