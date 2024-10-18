@@ -3,17 +3,21 @@ import "@/styles/global.css";
 import HomeLayout from "@/layouts/HomeLayout.astro";
 import ComicCard from "@/components/ComicCard.astro";
 import ComicSection from "@/components/ComicSection.astro";
+import { getCollection } from "astro:content";
+import type { Comic } from "@/utils/types/comic";
+
+const rawComics = await getCollection("comics");
+const comics: Comic[] = rawComics.map(
+	(comic: { data: Comic }) => comic.data as Comic
+);
 ---
 
 <HomeLayout>
 	<ComicSection>
-		<ComicCard />
-		<ComicCard />
-		<ComicCard />
-		<ComicCard />
-		<ComicCard />
-		<ComicCard />
-		<ComicCard />
-		<ComicCard />
+		{
+			comics.map((comic: Comic) => {
+				return <ComicCard comic={comic} />;
+			})
+		}
 	</ComicSection>
 </HomeLayout>
