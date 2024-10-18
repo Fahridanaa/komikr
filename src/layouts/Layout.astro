@@ -1,10 +1,17 @@
 ---
-import Header from "../components/layout/Header";
+import NavigationBar from "@/components/NavigationBar";
+import Header from "@/components/layout/Header.astro";
 interface Props {
 	title: string;
 }
 
 const { title } = Astro.props;
+
+const navItems = [
+	{ name: "Home", href: "/" },
+	{ name: "List", href: "/list" },
+	{ name: "Genre", href: "/genre" },
+];
 ---
 
 <!doctype html>
@@ -18,7 +25,9 @@ const { title } = Astro.props;
 		<title>{title}</title>
 	</head>
 	<body>
-		<Header client:load />
+		<Header client:load>
+			<NavigationBar logo="" items={navItems} />
+		</Header>
 		<main
 			class="max-w-[1224px] mx-auto flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
 			<slot />

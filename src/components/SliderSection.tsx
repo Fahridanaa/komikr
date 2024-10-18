@@ -1,6 +1,6 @@
 import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 
-const SliderSection = ({ children }) => (
+const SliderSection = ({ children }: { children: React.ReactNode }) => (
 	<div>
 		<h2 className="font-medium text-xl mb-1">Popular Comic Update</h2>
 		<ScrollArea className="py-2">
