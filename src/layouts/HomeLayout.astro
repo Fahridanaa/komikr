@@ -3,7 +3,7 @@ import CarouselPage from "@/components/CarouselPage";
 import Layout from "./Layout.astro";
 import PopularAside from "@/components/PopularAside";
 import ComicCard from "@/components/ComicCard.astro";
-import SliderSection from "@/components/SliderSection";
+import SliderSection from "@/components/SliderSection.astro";
 import { getCollection } from "astro:content";
 import type { Comic } from "@/utils/types/comic";
 
@@ -16,7 +16,7 @@ const comics: Comic[] = rawComics.map(
 <Layout title="Komikr - Tempat Baca Komik">
 	<div class="hero-section">
 		<CarouselPage client:load comics={comics} />
-		<SliderSection client:idle>
+		<SliderSection title="Popular Comic Update" client:idle>
 			{
 				comics.map((comic: Comic) => {
 					return <ComicCard comic={comic} />;
