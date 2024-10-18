@@ -4,22 +4,21 @@ import Layout from "./Layout.astro";
 import PopularAside from "@/components/PopularAside";
 import ComicCard from "@/components/ComicCard.astro";
 import SliderSection from "@/components/SliderSection";
+import { getCollection } from "astro:content";
+import type { Comic } from "@/utils/types/comic";
+
+const rawComics = await getCollection("comics");
+const comics: Comic[] = rawComics.map(
+	(comic: { data: Comic }) => comic.data as Comic
+);
 ---
 
 <Layout title="Komikr - Tempat Baca Komik">
 	<div class="hero-section">
-		<CarouselPage client:load />
-		<SliderSection client:idle>
-			<ComicCard />
-			<ComicCard />
-			<ComicCard />
-			<ComicCard />
-			<ComicCard />
-			<ComicCard />
-			<ComicCard />
-			<ComicCard />
-			<ComicCard />
-		</SliderSection>
+		<CarouselPage client:load comics={comics} />
+		<!-- <SliderSection client:idle>
+			{comics.map((comic: Comic) => <ComicCard comic={comic} />)}
+		</SliderSection> -->
 	</div>
 	<div class="relative flex gap-4 justify-center">
 		<div class="relative flex-[2] overflow-x-hidden">

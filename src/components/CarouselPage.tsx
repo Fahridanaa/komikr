@@ -4,16 +4,17 @@ import {
 	CarouselItem,
 	type CarouselApi,
 } from "@/components/ui/carousel";
-import encore from "@/assets/encore-sayang.jpg";
-import frieren from "@/assets/frieren.jpg";
-import waguri from "@/assets/kaoruko-waguri.jpg";
 import { Card, CardContent } from "./ui/card";
-import React from "react";
+import React, { useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Star } from "lucide-react";
+import type { Comic } from "@/utils/types/comic";
 
-const CarouselPage = () => {
-	const images = [encore, frieren, waguri];
+interface CarouselPageProps {
+	comics: Comic[];
+}
+
+const CarouselPage: React.FC<CarouselPageProps> = ({ comics }) => {
 	const [api, setApi] = React.useState<CarouselApi>();
 	const [current, setCurrent] = React.useState(0);
 	const [count, setCount] = React.useState(0);
@@ -49,24 +50,26 @@ const CarouselPage = () => {
 		<div className="hidden w-full md:block">
 			<Carousel setApi={setApi}>
 				<CarouselContent>
-					{images.map((image, index) => (
+					{comics.map((comic, index) => (
 						<CarouselItem key={index}>
 							<Card className="relative max-h-full overflow-hidden">
 								<CardContent className="relative flex items-center justify-center p-0 h-[350px] overflow-hidden lg:h-[400px]">
 									<img
-										src={image.src}
-										alt="carousel"
+										src={`/src/assets/comics/${comic.title
+											.toLowerCase()
+											.replace(/\s/g, "-")}/cover.jpg`}
+										alt={comic.title}
 										className="absolute object-cover object-center w-full h-full brightness-[.4] blur-lg z-[0]"
 									/>
 									<div className="relative flex h-full w-full p-8 md:p-12 text-white z-[1]">
-										<div>
+										<div className="flex-1">
 											<div className="mb-2">
 												<h2 className="text-2xl font-semibold">
 													<a
 														href="/"
 														className="hover:text-blue-400 transition-colors duration-200"
 													>
-														Solo Leveling
+														{comic.title}
 													</a>
 												</h2>
 												<p>
@@ -76,10 +79,10 @@ const CarouselPage = () => {
 													</span>
 												</p>
 												<p className="text-md text-orange-300">
-													Manhwa
+													{comic.type}
 												</p>
 												<p className="text-gray-300">
-													Action, Adventure
+													{comic.genres.join(", ")}
 												</p>
 											</div>
 											<div>
@@ -88,47 +91,7 @@ const CarouselPage = () => {
 														Sinopsis
 													</h4>
 													<p className="overflow-hidden text-ellipsis line-clamp-3 lg:line-clamp-4">
-														10 years ago, after “the
-														Gate” that connected the
-														real world with the
-														monster world opened,
-														some of the ordinary,
-														everyday people received
-														the power to hunt
-														monsters within the
-														Gate. They are known as
-														"Hunters". However, not
-														all Hunters are
-														powerful. My name is
-														Sung Jin-Woo, an E-rank
-														Hunter. I'm someone who
-														has to risk his life in
-														the lowliest of
-														dungeons, the "World's
-														Weakest". Having no
-														skills whatsoever to
-														display, I barely earned
-														the required money by
-														fighting in low-leveled
-														dungeons… at least until
-														I found a hidden dungeon
-														with the hardest
-														difficulty within the
-														D-rank dungeons! In the
-														end, as I was accepting
-														death, I suddenly
-														received a strange
-														power, a quest log that
-														only I could see, a
-														secret to leveling up
-														that only I know about!
-														If I trained in
-														accordance with my
-														quests and hunted
-														monsters, my level would
-														rise. Changing from the
-														weakest Hunter to the
-														strongest S-rank Hunter!
+														{comic.synopsis}
 													</p>
 												</div>
 												<div>
@@ -136,13 +99,13 @@ const CarouselPage = () => {
 														<span className="font-semibold">
 															Status
 														</span>
-														: Ongoing
+														: {comic.status}
 													</p>
 													<p>
 														<span className="font-semibold">
-															Author
+															Author(s)
 														</span>
-														: 추공 (Chugong)
+														: {comic.author}
 													</p>
 												</div>
 											</div>
@@ -151,8 +114,13 @@ const CarouselPage = () => {
 											<figure className="overflow-hidden rounded-md min-w-48 max-w-96 h-full">
 												<a href="/">
 													<img
-														src={image.src}
-														alt="carousel"
+														src={`/src/assets/comics/${comic.title
+															.toLowerCase()
+															.replace(
+																/\s/g,
+																"-"
+															)}/cover.jpg`}
+														alt={comic.title}
 														className="object-cover object-center w-full h-full"
 													/>
 												</a>

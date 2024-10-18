@@ -1,14 +1,13 @@
 ---
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import cek from "@/assets/kaoruko-waguri.jpg";
+import cek from "@/assets/comics/kaoru-hana-wa-rin-to-saku/cover.jpg";
+import type { Comic } from "@/utils/types/comic";
 
-// interface Props {
-// 	title: string;
-// 	body: string;
-// 	href: string;
-// }
+interface Props {
+	comic: Comic;
+}
 
-// const { href, title, body } = Astro.props;
+// const { title, author, synopsis, type, genres, status } = Astro.props;
 ---
 
 <Card className="max-w-40 md:max-w-48 border-0 shadow-none">

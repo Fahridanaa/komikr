@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ComicCardLite from "./ComicCardLite";
-import cek from "@/assets/kaoruko-waguri.jpg";
+import cek from "@/assets/comics/kaoru-hana-wa-rin-to-saku/cover.jpg";
 
 export default function PopularAside() {
 	return (
