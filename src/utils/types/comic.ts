@@ -1,8 +1,11 @@
 export interface Comic {
 	title: string;
 	author: string;
-	synopsis: string;
 	type: string;
-	genres: string[];
+	chapter: number;
+	release: Date;
+	updatedOn: Date;
 	status: string;
+	genres: string[];
+	synopsis: string;
 }

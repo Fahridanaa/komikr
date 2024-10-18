@@ -2,48 +2,55 @@
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import cek from "@/assets/comics/kaoru-hana-wa-rin-to-saku/cover.jpg";
 import type { Comic } from "@/utils/types/comic";
+import { Image } from "astro:assets";
 
 interface Props {
 	comic: Comic;
 }
 
-// const { title, author, synopsis, type, genres, status } = Astro.props;
+const { comic } = Astro.props;
+
+const { title, type, chapter } = Astro.props.comic;
+const TwoLatestChapter = [chapter, chapter - 1 < 1 ? null : chapter - 1];
 ---
 
-<Card className="max-w-40 md:max-w-48 border-0 shadow-none">
+<Card
+	className="flex flex-col justify-between gap-2 w-40 h-min-48 border-0 shadow-none">
 	<CardHeader className="relative p-0">
 		<a href="/" class="group">
-			<figure class="rounded-md overflow-hidden cursor-pointer">
-				<img
-					src={cek.src}
+			<figure
+				class="h-52 w-full rounded-md overflow-hidden cursor-pointer">
+				<Image
+					src={`/src/assets/comics/${comic.title
+						.toLowerCase()
+						.replace(/\s/g, "-")}/cover.jpg`}
 					alt="CEK"
-					class="transition-scale duration-200 ease-in-out group-hover:scale-110"
+					class="object-cover object-center w-full h-full transition-scale duration-200 ease-in-out group-hover:scale-110"
+					width={300}
+					height={300}
 				/>
 			</figure>
-			<div
-				class="absolute bg-blue-400 rounded-md right-3 top-1 px-1 py-1">
-				<span class="text-white font-medium">Manga</span>
+			<div class="absolute bg-blue-400 rounded-sm right-3 top-1 px-1">
+				<p class="relative text-white font-medium -top-0.5">{type}</p>
 			</div>
 			<CardTitle
 				className="text-center mt-2 group-hover:text-blue-400 transition-colors ease-in-out duration-200"
-				>Kaoruko Waguri</CardTitle
+				>{title}</CardTitle
 			>
 		</a>
 	</CardHeader>
-	<CardContent className="flex flex-col gap-1 p-0 mt-4">
-		<a href="/">
-			<div
-				class="flex flex-row justify-between rounded-md p-1 hover:bg-gray-200">
-				<p class="text-sm font-medium">Chapter 10</p>
-				<p class="text-sm text-gray-400">20 hours</p>
-			</div>
-		</a>
-		<a href="/">
-			<div
-				class="flex flex-row justify-between rounded-md p-1 hover:bg-gray-200">
-				<p class="text-sm font-medium">Chapter 11</p>
-				<p class="text-sm text-gray-400">8 days</p>
-			</div>
-		</a>
+	<CardContent className="min-h-16 flex flex-col gap-1 p-0">
+		{
+			TwoLatestChapter.map((chapter) =>
+				chapter === null ? null : (
+					<a href="/" class="group">
+						<div class="flex flex-row justify-between rounded-md p-1 hover:bg-gray-200">
+							<p class="text-sm font-medium">Chapter {chapter}</p>
+							<p class="text-sm text-gray-400">20 hours</p>
+						</div>
+					</a>
+				)
+			)
+		}
 	</CardContent>
 </Card>
