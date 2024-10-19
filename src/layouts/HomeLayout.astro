@@ -11,6 +11,34 @@ const rawComics = await getCollection("comics");
 const comics: Comic[] = rawComics.map(
 	(comic: { data: Comic }) => comic.data as Comic
 );
+
+const generateMockComic = (): Comic => ({
+	title: "Test Comic",
+	author: "Author Name",
+	type: "manga",
+	chapter: 1,
+	release: new Date("2023-01-01"),
+	updatedOn: new Date("2024-01-01"),
+	status: "ongoing",
+	genres: [
+		"Action",
+		"Adventure",
+		"Fantasy",
+		"Comedy",
+		"Romance",
+		"Drama",
+		"Slice of Life",
+		"Supernatural",
+		"Horror",
+		"Mystery",
+		"Psychological",
+		"Sci-fi",
+		"Seinen",
+	],
+	synopsis: "This is a test comic.",
+});
+
+const comicMockData: Comic[] = Array.from({ length: 10 }, generateMockComic);
 ---
 
 <Layout title="Komikr - Tempat Baca Komik">
@@ -19,7 +47,7 @@ const comics: Comic[] = rawComics.map(
 		<SliderSection title="Popular Comic Update">
 			{
 				comics.map((comic: Comic) => {
-					return <ComicCard comic={comic} />;
+					return <ComicCard comic={comic} className="max-w-40" />;
 				})
 			}
 		</SliderSection>
@@ -28,6 +56,6 @@ const comics: Comic[] = rawComics.map(
 		<div class="relative flex-[2] overflow-x-hidden">
 			<slot />
 		</div>
-		<PopularAside client:idle />
+		<PopularAside client:idle comics={comicMockData} />
 	</div>
 </Layout>

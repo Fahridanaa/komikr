@@ -6,16 +6,17 @@ import { Image } from "astro:assets";
 
 interface Props {
 	comic: Comic;
+	className?: string;
 }
 
-const { comic } = Astro.props;
+const { comic, className } = Astro.props;
 
 const { title, type, chapter } = Astro.props.comic;
 const TwoLatestChapter = [chapter, chapter - 1 < 1 ? null : chapter - 1];
 ---
 
 <Card
-	className="flex flex-col justify-between gap-2 w-40 h-min-48 border-0 shadow-none">
+	className={`${className} flex flex-col justify-between gap-2 border-0 shadow-none`}>
 	<CardHeader className="relative p-0">
 		<a href="/" class="group">
 			<figure

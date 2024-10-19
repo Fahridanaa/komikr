@@ -10,12 +10,26 @@ const rawComics = await getCollection("comics");
 const comics: Comic[] = rawComics.map(
 	(comic: { data: Comic }) => comic.data as Comic
 );
+
+const generateMockComic = (): Comic => ({
+	title: "Test Comic",
+	author: "Author Name",
+	type: "manga",
+	chapter: 1,
+	release: new Date("2023-01-01"),
+	updatedOn: new Date("2024-01-01"),
+	status: "ongoing",
+	genres: ["Action"],
+	synopsis: "This is a test comic.",
+});
+
+const comicMockData: Comic[] = Array.from({ length: 10 }, generateMockComic);
 ---
 
 <HomeLayout>
 	<ComicSection>
 		{
-			comics.map((comic: Comic) => {
+			comicMockData.map((comic: Comic) => {
 				return <ComicCard comic={comic} />;
 			})
 		}

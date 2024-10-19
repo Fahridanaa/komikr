@@ -111,7 +111,7 @@ const CarouselPage: React.FC<CarouselPageProps> = ({ comics }) => {
 											</div>
 										</div>
 										<div className="flex items-center p-4">
-											<figure className="overflow-hidden rounded-md min-w-48 max-w-96 h-full">
+											<figure className="overflow-hidden rounded-md max-w-48 h-60">
 												<a href="/">
 													<img
 														src={`/src/assets/comics/${comic.title
