@@ -25,8 +25,8 @@ const navItems = [
 		<title>{title}</title>
 	</head>
 	<body>
-		<Header client:load>
-			<NavigationBar logo="" items={navItems} />
+		<Header>
+			<NavigationBar logo="" items={navItems} client:idle />
 		</Header>
 		<main
 			class="max-w-[1224px] mx-auto flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">

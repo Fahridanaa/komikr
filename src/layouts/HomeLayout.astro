@@ -16,7 +16,7 @@ const comics: Comic[] = rawComics.map(
 <Layout title="Komikr - Tempat Baca Komik">
 	<div class="hero-section">
 		<CarouselPage client:load comics={comics} />
-		<SliderSection title="Popular Comic Update" client:idle>
+		<SliderSection title="Popular Comic Update">
 			{
 				comics.map((comic: Comic) => {
 					return <ComicCard comic={comic} />;
