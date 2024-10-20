@@ -5,10 +5,10 @@ import {
 	type CarouselApi,
 } from "@/components/ui/carousel";
 import { Card, CardContent } from "./ui/card";
-import React, { useEffect } from "react";
+import React from "react";
 import { cn } from "@/lib/utils";
 import { Star } from "lucide-react";
-import type { Comic } from "@/utils/types/comic";
+import type { Comic } from "@/models/comic";
 
 interface CarouselPageProps {
 	comics: Comic[];

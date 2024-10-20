@@ -1,8 +1,8 @@
 ---
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import cek from "@/assets/comics/kaoru-hana-wa-rin-to-saku/cover.jpg";
-import type { Comic } from "@/utils/types/comic";
+import type { Comic } from "@/models/comic";
 import { Image } from "astro:assets";
+import { lowerCaseKebab } from "@/utils/helpers";
 
 interface Props {
 	comic: Comic;
@@ -18,13 +18,11 @@ const TwoLatestChapter = [chapter, chapter - 1 < 1 ? null : chapter - 1];
 <Card
 	className={`${className} flex flex-col justify-between gap-2 border-0 shadow-none`}>
 	<CardHeader className="relative p-0">
-		<a href="/" class="group">
+		<a href={`/comics/${lowerCaseKebab(title)}`} class="group">
 			<figure
 				class="h-52 w-full rounded-md overflow-hidden cursor-pointer">
 				<Image
-					src={`/src/assets/comics/${comic.title
-						.toLowerCase()
-						.replace(/\s/g, "-")}/cover.jpg`}
+					src={`/src/assets/comics/${lowerCaseKebab(title)}/cover.jpg`}
 					alt="CEK"
 					class="object-cover object-center w-full h-full transition-scale duration-200 ease-in-out group-hover:scale-110"
 					width={300}

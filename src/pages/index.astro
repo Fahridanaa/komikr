@@ -4,7 +4,7 @@ import HomeLayout from "@/layouts/HomeLayout.astro";
 import ComicCard from "@/components/ComicCard.astro";
 import ComicSection from "@/components/ComicSection.astro";
 import { getCollection } from "astro:content";
-import type { Comic } from "@/utils/types/comic";
+import type { Comic } from "@/models/comic";
 
 const rawComics = await getCollection("comics");
 const comics: Comic[] = rawComics.map(

@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import type { Comic } from "@/utils/types/comic";
+import type { Comic } from "@/models/comic";
 import ComicOverviewList from "./ComicOverviewList";
 
 export default function PopularAside({ comics }: { comics: Comic[] }) {

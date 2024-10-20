@@ -1,5 +1,5 @@
 import React from "react";
-import type { Comic } from "@/utils/types/comic";
+import type { Comic } from "@/models/comic";
 
 interface ComicOverviewListProps {
 	comics: Comic[];
