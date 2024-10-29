@@ -1,6 +1,7 @@
 import { defineCollection, z } from "astro:content";
 
 const comicCollection = defineCollection({
+    type: "data",
     schema: z.object({
         title: z.string(),
         author: z.string(),
