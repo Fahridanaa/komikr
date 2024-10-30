@@ -1,17 +1,16 @@
 ---
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import type { Comic } from "@/models/comic";
+import type { ComicMeta } from "@/models/comic";
 import { Image } from "astro:assets";
 import { lowerCaseKebab } from "@/utils/helpers";
 
 interface Props {
-	comic: Comic;
+	comic: ComicMeta;
 	className?: string;
 }
 
 const { comic, className } = Astro.props;
-
-const { title, type, chapter } = Astro.props.comic;
+const { title, type, chapter } = comic;
 const TwoLatestChapter = [chapter, chapter - 1 < 1 ? null : chapter - 1];
 ---
 

@@ -1,9 +1,9 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import type { Comic } from "@/models/comic";
+import type { ComicMeta } from "@/models/comic";
 import ComicOverviewList from "./ComicOverviewList";
 
-export default function PopularAside({ comics }: { comics: Comic[] }) {
+export default function PopularAside({ comics }: { comics: ComicMeta[] }) {
 	return (
 		<aside className="hidden min-h-80 max-w-72 relative flex-1 md:block">
 			<h2 className="text-xl font-medium mb-1">Popular</h2>

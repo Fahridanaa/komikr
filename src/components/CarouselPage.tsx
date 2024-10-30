@@ -8,10 +8,10 @@ import { Card, CardContent } from "./ui/card";
 import React from "react";
 import { cn } from "@/lib/utils";
 import { Star } from "lucide-react";
-import type { Comic } from "@/models/comic";
+import type { ComicMeta } from "@/models/comic";
 
 interface CarouselPageProps {
-	comics: Comic[];
+	comics: ComicMeta[];
 }
 
 const CarouselPage: React.FC<CarouselPageProps> = ({ comics }) => {

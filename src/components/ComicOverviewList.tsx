@@ -1,8 +1,8 @@
 import React from "react";
-import type { Comic } from "@/models/comic";
+import type { ComicMeta } from "@/models/comic";
 
 interface ComicOverviewListProps {
-	comics: Comic[];
+	comics: ComicMeta[];
 }
 
 const ComicOverviewList: React.FC<ComicOverviewListProps> = ({ comics }) => {

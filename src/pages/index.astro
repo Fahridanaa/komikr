@@ -4,32 +4,18 @@ import HomeLayout from "@/layouts/HomeLayout.astro";
 import ComicCard from "@/components/ComicCard.astro";
 import ComicSection from "@/components/ComicSection.astro";
 import { getCollection } from "astro:content";
-import type { Comic } from "@/models/comic";
+import type { ComicMeta } from "@/models/comic";
 
-const rawComics = await getCollection("comics");
-const comics: Comic[] = rawComics.map(
-	(comic: { data: Comic }) => comic.data as Comic
+const comicEntries = await getCollection("comics");
+const comics: ComicMeta[] = comicEntries.map(
+	(entry) => entry.data as unknown as ComicMeta
 );
-
-const generateMockComic = (): Comic => ({
-	title: "Test Comic",
-	author: "Author Name",
-	type: "manga",
-	chapter: 1,
-	release: new Date("2023-01-01"),
-	updatedOn: new Date("2024-01-01"),
-	status: "ongoing",
-	genres: ["Action"],
-	synopsis: "This is a test comic.",
-});
-
-const comicMockData: Comic[] = Array.from({ length: 10 }, generateMockComic);
 ---
 
 <HomeLayout>
 	<ComicSection>
 		{
-			comicMockData.map((comic: Comic) => {
+			comics.map((comic: ComicMeta) => {
 				return <ComicCard comic={comic} />;
 			})
 		}

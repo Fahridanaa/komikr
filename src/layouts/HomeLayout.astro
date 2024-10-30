@@ -5,40 +5,12 @@ import PopularAside from "@/components/PopularAside";
 import ComicCard from "@/components/ComicCard.astro";
 import SliderSection from "@/components/SliderSection.astro";
 import { getCollection } from "astro:content";
-import type { Comic } from "@/models/comic";
+import type { ComicMeta } from "@/models/comic";
 
-const rawComics = await getCollection("comics");
-const comics: Comic[] = rawComics.map(
-	(comic: { data: Comic }) => comic.data as Comic
+const comicEntries = await getCollection("comics");
+const comics: ComicMeta[] = comicEntries.map(
+	(entry) => entry.data as ComicMeta
 );
-
-const generateMockComic = (): Comic => ({
-	title: "Test Comic",
-	author: "Author Name",
-	type: "manga",
-	chapter: 1,
-	release: new Date("2023-01-01"),
-	updatedOn: new Date("2024-01-01"),
-	status: "ongoing",
-	genres: [
-		"Action",
-		"Adventure",
-		"Fantasy",
-		"Comedy",
-		"Romance",
-		"Drama",
-		"Slice of Life",
-		"Supernatural",
-		"Horror",
-		"Mystery",
-		"Psychological",
-		"Sci-fi",
-		"Seinen",
-	],
-	synopsis: "This is a test comic.",
-});
-
-const comicMockData: Comic[] = Array.from({ length: 10 }, generateMockComic);
 ---
 
 <Layout title="Komikr - Tempat Baca Komik">
@@ -46,7 +18,7 @@ const comicMockData: Comic[] = Array.from({ length: 10 }, generateMockComic);
 		<CarouselPage client:load comics={comics} />
 		<SliderSection title="Popular Comic Update">
 			{
-				comics.map((comic: Comic) => {
+				comics.map((comic: ComicMeta) => {
 					return <ComicCard comic={comic} className="max-w-40" />;
 				})
 			}
@@ -56,6 +28,6 @@ const comicMockData: Comic[] = Array.from({ length: 10 }, generateMockComic);
 		<div class="relative flex-[2] overflow-x-hidden">
 			<slot />
 		</div>
-		<PopularAside client:idle comics={comicMockData} />
+		<PopularAside client:idle comics={comics} />
 	</div>
 </Layout>
