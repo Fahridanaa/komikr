@@ -1,23 +1,26 @@
 ---
 import ComicLayout from "@/layouts/ComicLayout.astro";
-import { getCollection, type CollectionEntry } from "astro:content";
+import type { Comic } from "@/models/comic";
+import { getCollection } from "astro:content";
 
 export async function getStaticPaths() {
 	const comicEntries = await getCollection("comics");
 	return comicEntries.map((entry) => ({
-		params: { slug: entry.slug },
+		params: { slug: entry.id },
 		props: { entry },
 	}));
 }
 
 type Props = {
-	entry: CollectionEntry<"comics">;
+	entry: Comic;
 };
 
 const { entry } = Astro.props;
-const { Content } = await entry.render();
+const { synopsis } = await entry.data;
 ---
 
-<ComicLayout frontmatter={entry.data} slug={entry.slug}>
-	<Content />
+<ComicLayout frontmatter={entry.data} slug={entry.id}>
+	<div class="flex flex-col gap-4">
+		<p>{synopsis}</p>
+	</div>
 </ComicLayout>

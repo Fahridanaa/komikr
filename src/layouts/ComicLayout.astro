@@ -1,8 +1,16 @@
 ---
+import type { ComicMeta } from "@/models/comic";
 import Layout from "./Layout.astro";
+
+export type Props = {
+	frontmatter: ComicMeta;
+	slug: string;
+};
+
+const { frontmatter, slug, ...props } = Astro.props as Props;
 ---
 
-<Layout title="Comic">
+<Layout title={frontmatter.title}>
 	<h1>Hello this is</h1>
 	<slot />
 </Layout>
