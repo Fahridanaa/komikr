@@ -7,10 +7,13 @@ export type Props = {
 	slug: string;
 };
 
-const { frontmatter, slug, ...props } = Astro.props as Props;
+const { frontmatter, slug, ...props } = Astro.props;
 ---
 
 <Layout title={frontmatter.title}>
-	<h1>Hello this is</h1>
-	<slot />
+	<div class="relative flex gap-4 justify-center">
+		<div class="relative flex-[2] overflow-x-hidden">
+			<slot />
+		</div>
+	</div>
 </Layout>

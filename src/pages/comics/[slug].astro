@@ -1,11 +1,12 @@
 ---
+import "@/styles/global.css";
 import ComicLayout from "@/layouts/ComicLayout.astro";
 import type { Comic } from "@/models/comic";
 import { getCollection } from "astro:content";
 
 export async function getStaticPaths() {
 	const comicEntries = await getCollection("comics");
-	return comicEntries.map((entry) => ({
+	return comicEntries.map((entry: Comic) => ({
 		params: { slug: entry.id },
 		props: { entry },
 	}));
