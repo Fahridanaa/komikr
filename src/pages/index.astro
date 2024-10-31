@@ -16,7 +16,7 @@ const comics: ComicMeta[] = comicEntries.map(
 	<ComicSection>
 		{
 			comics.map((comic: ComicMeta) => {
-				return <ComicCard comic={comic} />;
+				return <ComicCard comic={comic} isLazyImage={true} />;
 			})
 		}
 	</ComicSection>

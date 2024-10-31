@@ -7,9 +7,10 @@ import { lowerCaseKebab } from "@/utils/helpers";
 interface Props {
 	comic: ComicMeta;
 	className?: string;
+	isLazyImage?: boolean;
 }
 
-const { comic, className } = Astro.props;
+const { comic, className, isLazyImage = false } = Astro.props;
 const { title, type, chapter } = comic;
 const TwoLatestChapter = [chapter, chapter - 1 < 1 ? null : chapter - 1];
 ---
@@ -26,7 +27,7 @@ const TwoLatestChapter = [chapter, chapter - 1 < 1 ? null : chapter - 1];
 					class="object-cover object-center w-full h-full transition-scale duration-200 ease-in-out group-hover:scale-110"
 					width={300}
 					height={300}
-					loading="eager"
+					loading={isLazyImage ? "lazy" : "eager"}
 				/>
 			</figure>
 			<div class="absolute bg-blue-400 rounded-sm right-3 top-1 px-1">
