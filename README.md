@@ -1,3 +1,3 @@
 # Komikr
 
-Komik
+Just a simple comic website
