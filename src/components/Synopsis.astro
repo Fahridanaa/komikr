@@ -1,0 +1,12 @@
+---
+interface Props {
+	synopsis: string;
+}
+
+const { synopsis } = Astro.props;
+---
+
+<div class="space-y-2">
+	<h2 class="font-semibold">Synopsis</h2>
+	<p class="text-muted-foreground leading-relaxed">{synopsis}</p>
+</div>
