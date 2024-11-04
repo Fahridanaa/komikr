@@ -5,21 +5,23 @@ import {
 	type CarouselApi,
 } from "@/components/ui/carousel";
 import { Card, CardContent } from "./ui/card";
-import React from "react";
+import { useEffect, useState, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import { Star } from "lucide-react";
 import type { ComicMeta } from "@/models/comic";
+import { lowerCaseKebab } from "@/utils/helpers";
+import { Badge } from "./ui/badge";
 
 interface CarouselPageProps {
 	comics: ComicMeta[];
 }
 
-const CarouselPage: React.FC<CarouselPageProps> = ({ comics }) => {
-	const [api, setApi] = React.useState<CarouselApi>();
-	const [current, setCurrent] = React.useState(0);
-	const [count, setCount] = React.useState(0);
+export default function CarouselPage({ comics }: CarouselPageProps) {
+	const [api, setApi] = useState<CarouselApi>();
+	const [current, setCurrent] = useState(0);
+	const [count, setCount] = useState(0);
 
-	React.useEffect(() => {
+	useEffect(() => {
 		if (!api) return;
 
 		setCount(api.scrollSnapList().length);
@@ -40,116 +42,134 @@ const CarouselPage: React.FC<CarouselPageProps> = ({ comics }) => {
 		return () => clearInterval(autoSlideInterval);
 	}, [api]);
 
-	const handleDotClick = React.useCallback(
+	const handleDotClick = useCallback(
 		(index: number) => {
 			api?.scrollTo(index);
 		},
 		[api]
 	);
+
 	return (
 		<div className="hidden w-full md:block">
-			<Carousel setApi={setApi}>
+			<Carousel setApi={setApi} className="w-full">
 				<CarouselContent>
 					{comics.map((comic, index) => (
 						<CarouselItem key={index}>
-							<Card className="relative max-h-full overflow-hidden">
-								<CardContent className="relative flex items-center justify-center p-0 h-[350px] overflow-hidden lg:h-[400px]">
-									<img
-										src={`/src/assets/comics/${comic.title
-											.toLowerCase()
-											.replace(/\s/g, "-")}/cover.jpg`}
-										alt={comic.title}
-										className="absolute object-cover object-center w-full h-full brightness-[.4] blur-lg z-[0]"
-									/>
-									<div className="relative flex h-full w-full p-8 md:p-12 text-white z-[1]">
-										<div className="flex-1">
-											<div className="mb-2">
-												<h2 className="text-2xl font-semibold">
-													<a
-														href="/"
-														className="hover:text-blue-400 transition-colors duration-200"
-													>
-														{comic.title}
-													</a>
-												</h2>
-												<p>
-													<Star className="w-5 h-5 text-yellow-400 inline-block mr-1" />
-													<span className="align-middle">
-														9.84
-													</span>
-												</p>
-												<p className="text-md text-orange-300">
-													{comic.type}
-												</p>
-												<p className="text-gray-300">
-													{comic.genres.join(", ")}
-												</p>
-											</div>
-											<div>
-												<div className="mb-2">
-													<h4 className="text-lg font-semibold">
-														Sinopsis
-													</h4>
-													<p className="overflow-hidden text-ellipsis line-clamp-3 lg:line-clamp-4">
-														{comic.synopsis}
-													</p>
-												</div>
-												<div>
-													<p>
-														<span className="font-semibold">
-															Status
-														</span>
-														: {comic.status}
-													</p>
-													<p>
-														<span className="font-semibold">
-															Author(s)
-														</span>
-														: {comic.author}
-													</p>
-												</div>
-											</div>
-										</div>
-										<div className="flex items-center p-4">
-											<figure className="overflow-hidden rounded-md max-w-48 h-60">
-												<a href="/">
-													<img
-														src={`/src/assets/comics/${comic.title
-															.toLowerCase()
-															.replace(
-																/\s/g,
-																"-"
-															)}/cover.jpg`}
-														alt={comic.title}
-														className="object-cover object-center w-full h-full"
-													/>
-												</a>
-											</figure>
-										</div>
-									</div>
-								</CardContent>
-							</Card>
+							<FeaturedComic comic={comic} />
 						</CarouselItem>
 					))}
 				</CarouselContent>
 			</Carousel>
-			<div className="flex justify-end gap-2 mt-4 z-10">
-				{Array.from({ length: count }).map((_, index) => (
-					<button
-						key={index}
-						className={cn(
-							"w-3 h-3 rounded-full transition-colors duration-200",
-							current === index
-								? "bg-primary"
-								: "bg-gray-300 hover:bg-gray-400"
-						)}
-						onClick={() => handleDotClick(index)}
-						aria-label={`Go to slide ${index + 1}`}
-					/>
-				))}
-			</div>
+			<CarouselDots
+				count={count}
+				current={current}
+				onClick={handleDotClick}
+			/>
 		</div>
 	);
-};
+}
 
-export default CarouselPage;
+function FeaturedComic({ comic }: { comic: ComicMeta }) {
+	const coverPath = `/src/assets/comics/${lowerCaseKebab(
+		comic.title
+	)}/cover.jpg`;
+
+	return (
+		<Card className="relative overflow-hidden">
+			<CardContent className="relative flex h-[400px] p-0">
+				<div className="absolute inset-0">
+					<img
+						src={coverPath}
+						alt=""
+						className="w-full h-full object-cover brightness-[0.2] blur-sm"
+					/>
+				</div>
+
+				<div className="relative flex w-full p-8 text-white z-10">
+					<div className="flex-1 space-y-4">
+						<div>
+							<h2 className="text-2xl font-semibold hover:text-primary transition-colors">
+								<a
+									href={`/comics/${lowerCaseKebab(
+										comic.title
+									)}`}
+								>
+									{comic.title}
+								</a>
+							</h2>
+							<div className="flex items-center gap-2">
+								<Star className="w-5 h-5 text-yellow-400" />
+								<span>9.84</span>
+							</div>
+							<Badge variant="default" className="mt-2">
+								{comic.type}
+							</Badge>
+							<p className="text-muted-foreground mt-1">
+								{comic.genres.join(", ")}
+							</p>
+						</div>
+
+						<div className="space-y-2">
+							<h4 className="font-semibold">Synopsis</h4>
+							<p className="line-clamp-4 text-muted-foreground">
+								{comic.synopsis}
+							</p>
+						</div>
+
+						<div className="space-y-1 text-sm">
+							<p>
+								<span className="font-semibold">Status:</span>{" "}
+								{comic.status}
+							</p>
+							<p>
+								<span className="font-semibold">Author:</span>{" "}
+								{comic.author}
+							</p>
+						</div>
+					</div>
+
+					<div className="ml-8 flex-shrink-0">
+						<a
+							href={`/comics/${lowerCaseKebab(comic.title)}`}
+							className="block"
+						>
+							<img
+								src={coverPath}
+								alt={comic.title}
+								className="w-48 h-60 object-cover rounded-lg hover:scale-105 transition-transform"
+							/>
+						</a>
+					</div>
+				</div>
+			</CardContent>
+		</Card>
+	);
+}
+
+function CarouselDots({
+	count,
+	current,
+	onClick,
+}: {
+	count: number;
+	current: number;
+	onClick: (index: number) => void;
+}) {
+	return (
+		<div className="flex justify-end gap-2 mt-4">
+			{Array.from({ length: count }).map((_, index) => (
+				<button
+					key={index}
+					className={cn(
+						"w-3 h-3 rounded-full transition-colors border",
+						current === index
+							? "bg-primary"
+							: "bg-muted hover:bg-muted-foreground"
+					)}
+					onClick={() => onClick(index)}
+					aria-label={`Go to slide ${index + 1}`}
+				/>
+			))}
+		</div>
+	);
+}

@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import type { ComicMeta } from "@/models/comic";
 import { Image } from "astro:assets";
 import { lowerCaseKebab } from "@/utils/helpers";
+import { Badge } from "./ui/badge";
 
 interface Props {
 	comic: ComicMeta;
@@ -12,45 +13,44 @@ interface Props {
 
 const { comic, className, isLazyImage = false } = Astro.props;
 const { title, type, chapter } = comic;
-const TwoLatestChapter = [chapter, chapter - 1 < 1 ? null : chapter - 1];
+const latestChapters = [chapter, chapter - 1].filter((ch) => ch > 0);
 ---
 
-<Card
-	className={`${className} flex flex-col justify-between gap-2 border-0 shadow-none`}>
+<Card className={`group overflow-hidden ${className}`}>
 	<CardHeader className="relative p-0">
-		<a href={`/comics/${lowerCaseKebab(title)}`} class="group">
-			<figure
-				class="h-52 w-full rounded-md overflow-hidden cursor-pointer">
+		<a href={`/comics/${lowerCaseKebab(title)}`}>
+			<div class="relative aspect-[3/4] overflow-hidden rounded-t-lg">
 				<Image
 					src={`/src/assets/comics/${lowerCaseKebab(title)}/cover.jpg`}
-					alt="CEK"
-					class="object-cover object-center w-full h-full transition-scale duration-200 ease-in-out group-hover:scale-110"
+					alt={title}
+					class="object-cover object-center w-full h-full transition-transform duration-300 group-hover:scale-110"
 					width={300}
-					height={300}
+					height={400}
 					loading={isLazyImage ? "lazy" : "eager"}
 				/>
-			</figure>
-			<div class="absolute bg-blue-400 rounded-sm right-3 top-1 px-1">
-				<p class="relative text-white font-medium -top-0.5">{type}</p>
+				<Badge
+					className="absolute right-2 top-2 bg-primary text-primary-foreground">
+					{type}
+				</Badge>
 			</div>
 			<CardTitle
-				className="text-center mt-2 group-hover:text-blue-400 transition-colors ease-in-out duration-200"
-				>{title}</CardTitle
-			>
+				className="px-4 py-2 text-base line-clamp-2 group-hover:text-primary transition-colors">
+				{title}
+			</CardTitle>
 		</a>
 	</CardHeader>
-	<CardContent className="min-h-16 flex flex-col gap-1 p-0">
+	<CardContent className="p-4 pt-0">
 		{
-			TwoLatestChapter.map((chapter) =>
-				chapter === null ? null : (
-					<a href="/" class="group">
-						<div class="flex flex-row justify-between rounded-md p-1 hover:bg-gray-200">
-							<p class="text-sm font-medium">Chapter {chapter}</p>
-							<p class="text-sm text-gray-400">20 hours</p>
-						</div>
-					</a>
-				)
-			)
+			latestChapters.map((ch) => (
+				<a
+					href={`/comics/${lowerCaseKebab(title)}/chapter-${ch}`}
+					class="block">
+					<div class="flex justify-between py-1 text-sm hover:bg-muted rounded px-2 transition-colors">
+						<span>Chapter {ch}</span>
+						<span class="text-muted-foreground">20h ago</span>
+					</div>
+				</a>
+			))
 		}
 	</CardContent>
 </Card>

@@ -1,5 +1,4 @@
 ---
-import "@/styles/global.css";
 import HomeLayout from "@/layouts/HomeLayout.astro";
 import ComicCard from "@/components/ComicCard.astro";
 import ComicSection from "@/components/ComicSection.astro";
@@ -13,7 +12,7 @@ const comics: ComicMeta[] = comicEntries.map(
 ---
 
 <HomeLayout>
-	<ComicSection>
+	<ComicSection title="Latest Update">
 		{
 			comics.map((comic: ComicMeta) => {
 				return <ComicCard comic={comic} isLazyImage={true} />;
