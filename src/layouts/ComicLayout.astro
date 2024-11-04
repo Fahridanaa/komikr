@@ -1,15 +1,72 @@
 ---
 import type { ComicMeta } from "@/models/comic";
 import Layout from "./Layout.astro";
+import { Card } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import CoverSection from "@/components/CoverSection.astro";
+import { MetaInfo } from "@/components/ComicMetaInfo";
+import { GenreList } from "@/components/ComicGenreList";
+import Synopsis from "@/components/Synopsis.astro";
+import { lowerCaseKebab } from "@/utils/helpers";
 
 export type Props = {
 	frontmatter: ComicMeta;
 	slug: string;
 };
 
-const { frontmatter, slug, ...props } = Astro.props;
+const { frontmatter, slug } = Astro.props;
+const {
+	title,
+	author,
+	type,
+	chapter,
+	release,
+	updatedOn,
+	status,
+	genres,
+	synopsis,
+} = frontmatter;
 ---
 
-<Layout title={frontmatter.title}>
-	<slot />
+<Layout title={title}>
+	<main class="min-h-screen bg-background">
+		<div class="container mx-auto px-4 py-8">
+			<Card className="overflow-hidden bg-card">
+				<div class="grid md:grid-cols-[300px_1fr] gap-6 p-6">
+					<!-- Cover Section -->
+					<CoverSection
+						title={title}
+						status={status}
+						type={type}
+						coverImage=`/src/assets/comics/${lowerCaseKebab(title)}/cover.jpg`
+					/>
+
+					<!-- Content Section -->
+					<div class="space-y-6">
+						<div class="space-y-2">
+							<h1 class="text-3xl font-bold tracking-tight">
+								{title}
+							</h1>
+							<MetaInfo
+								client:load
+								author={author}
+								chapter={chapter}
+								release={release}
+								updatedOn={updatedOn}
+							/>
+						</div>
+
+						<Separator className="my-4" />
+
+						<GenreList client:load genres={genres} />
+
+						<Synopsis synopsis={synopsis} />
+
+						<!-- Slot for additional content -->
+						<slot />
+					</div>
+				</div>
+			</Card>
+		</div>
+	</main>
 </Layout>

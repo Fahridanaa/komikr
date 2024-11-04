@@ -4,8 +4,8 @@ import { format } from "date-fns";
 interface MetaInfoProps {
 	author: string;
 	chapter: number;
-	release: string;
-	updatedOn: string;
+	release: Date;
+	updatedOn: Date;
 }
 
 export function MetaInfo({
