@@ -1,6 +1,7 @@
 import * as cheerio from 'cheerio';
 import axios from 'axios';
 import { promises as fs } from 'fs';
+import { createWriteStream } from 'fs'
 import path from 'path';
 import zlib from 'zlib';
 import { fileURLToPath } from 'url';
@@ -11,16 +12,33 @@ const __dirname = path.dirname(__filename);
 const COMICS_DIR = path.resolve(__dirname, 'comics');
 const ASSETS_DIR = path.resolve(COMICS_DIR, 'assets');
 
-async function downloadImage(url, filepath) {
-    const response = await axios({
-        url,
-        responseType: 'stream',
-    });
-    return new Promise((resolve, reject) => {
-        response.data.pipe(fs.createWriteStream(filepath))
-            .on('finish', resolve)
-            .on('error', reject);
-    });
+async function downloadImage(url, filepath, retries = 3) {
+    for (let i = 0; i < retries; i++) {
+        try {
+            const response = await axios({
+                url,
+                responseType: 'stream',
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+                    'Referer': 'https://komikcast.cz/',
+                    'Accept': 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8',
+                    'Accept-Encoding': 'gzip, deflate, br',
+                    'Accept-Language': 'en-US,en;q=0.9'
+                },
+                timeout: 5000
+            });
+
+            return new Promise((resolve, reject) => {
+                response.data.pipe(createWriteStream(filepath))
+                    .on('finish', resolve)
+                    .on('error', reject);
+            });
+        } catch (error) {
+            if (i === retries - 1) throw error;
+            console.log(`Retry ${i + 1}/${retries} for ${url}`);
+            await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1))); // Exponential backoff
+        }
+    }
 }
 
 async function fetchData(url) {
@@ -76,10 +94,15 @@ async function scrapeComicMeta(url) {
 
         console.log(comicMeta);
 
-        // Save comic metadata as JSON file
         const jsonFilePath = path.join(COMICS_DIR, `${comicSlug}.json`);
-        console.log('Saving comic metadata to:', jsonFilePath);
-        await fs.writeFile(jsonFilePath, JSON.stringify(comicMeta, null, 2), 'utf-8');
+        try {
+            await fs.access(jsonFilePath);
+            console.log('Comic metadata already exists, skipping:', jsonFilePath);
+        } catch (error) {
+            // File doesn't exist, proceed with writing
+            console.log('Saving comic metadata to:', jsonFilePath);
+            await fs.writeFile(jsonFilePath, JSON.stringify(comicMeta, null, 2), 'utf-8');
+        }
 
         return comicSlug;
     } catch (error) {
@@ -93,13 +116,12 @@ async function scrapeChapterImages(url, comicSlug) {
         const data = await fetchData(url);
         const $ = cheerio.load(data);
 
-        const images = $('.chapter-images img').map((_, el) => $(el).attr('src')).get();
+        const images = $('#chapter_body>.main-reading-area img').map((_, el) => $(el).attr('src')).get();
 
         const chapterNum = url.match(/chapter-(\d+)/)[1];
         const chapterDir = path.join(ASSETS_DIR, comicSlug, `chapter-${chapterNum}`);
         await fs.mkdir(chapterDir, { recursive: true });
 
-        // Download all images in the chapter
         for (let [index, imageUrl] of images.entries()) {
             const imageNum = String(index + 1).padStart(3, '0');
             await downloadImage(imageUrl, path.join(chapterDir, `${imageNum}.jpg`));
@@ -112,18 +134,18 @@ async function scrapeChapterImages(url, comicSlug) {
 async function main() {
     try {
         await fs.mkdir(COMICS_DIR, { recursive: true });
-        // await fs.mkdir(ASSETS_DIR, { recursive: true });
+        await fs.mkdir(ASSETS_DIR, { recursive: true });
 
         const comicUrl = 'https://komikcast.cz/komik/myst-might-mayhem/';
         const comicSlug = await scrapeComicMeta(comicUrl);
 
-        // if (comicSlug) {
-        //     // Scrape first 3 chapters as an example
-        //     for (let i = 1; i <= 3; i++) {
-        //         const chapterUrl = `${comicUrl}/chapter-${i}`;
-        //         await scrapeChapterImages(chapterUrl, comicSlug);
-        //     }
-        // }
+        if (comicSlug) {
+            // Scrape first 3 chapters as an example
+            for (let i = 1; i <= 3; i++) {
+                const chapterUrl = `https://komikcast.cz/chapter/myst-might-mayhem-chapter-0${i}-bahasa-indonesia/`;
+                await scrapeChapterImages(chapterUrl, comicSlug);
+            }
+        }
     } catch (error) {
         console.error('Scraping failed:', error.message);
     }
