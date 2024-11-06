@@ -13,14 +13,15 @@ const SRC_DIR = path.resolve(__dirname, '..', 'src');
 const COMICS_DIR = path.resolve(SRC_DIR, 'content', 'comics');
 const ASSETS_DIR = path.resolve(SRC_DIR, 'assets', 'comics');
 
+// Function to download images with retries
 const downloadImage = async (url, filepath, retries = 3) => {
-    const attemptDownload = async (attempt) => {
+    for (let attempt = 0; attempt < retries; attempt++) {
         try {
             const response = await axios({
                 url,
                 responseType: 'stream',
                 headers: {
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+                    'User-Agent': 'Mozilla/5.0',
                     'Referer': 'https://komikcast.cz/',
                     'Accept': 'image/*',
                     'Accept-Encoding': 'gzip, deflate, br',
@@ -35,17 +36,14 @@ const downloadImage = async (url, filepath, retries = 3) => {
                     .on('error', reject);
             });
         } catch (error) {
-            if (attempt < retries - 1) {
-                console.log(`Retry ${attempt + 1}/${retries} for ${url}`);
-                await new Promise(res => setTimeout(res, 1000 * (attempt + 1)));
-                return attemptDownload(attempt + 1);
-            }
-            throw error;
+            if (attempt === retries - 1) throw error;
+            console.log(`Retry ${attempt + 1}/${retries} for ${url}`);
+            await new Promise(res => setTimeout(res, 1000 * (attempt + 1))); // Exponential backoff
         }
-    };
-    return attemptDownload(0);
+    }
 };
 
+// Function to fetch data with decompression handling
 const fetchData = async (url) => {
     const response = await axios.get(url, { responseType: 'arraybuffer' });
     const data = response.headers['content-encoding']
@@ -55,18 +53,20 @@ const fetchData = async (url) => {
     return data.toString();
 };
 
+// Function to save comic metadata
 const saveComicMetadata = async (comicMeta, comicSlug) => {
     const jsonFilePath = path.join(COMICS_DIR, `${comicSlug}.json`);
 
     try {
         await fs.access(jsonFilePath);
-        console.log('Comic metadata already exists, skipping:', jsonFilePath);
+        console.log('Comic metadata already exists:', jsonFilePath);
     } catch {
         console.log('Saving comic metadata to:', jsonFilePath);
         await fs.writeFile(jsonFilePath, JSON.stringify(comicMeta, null, 2), 'utf-8');
     }
 };
 
+// Function to extract comic metadata
 const extractComicMeta = ($) => ({
     title: $('.komik_info-content-body-title').text().replace(/bahasa\s+indonesia/i, '').trim(),
     nativeTitle: $('.komik_info-content-native').text().trim(),
@@ -79,6 +79,7 @@ const extractComicMeta = ($) => ({
     synopsis: $('.komik_info-description-sinopsis').text().trim(),
 });
 
+// Function to create a slug from the title
 const createSlug = (title) =>
     title.toLowerCase()
         .replace(/[^\w\s-]/g, '')
@@ -90,13 +91,14 @@ const handleCoverImage = async (coverImageUrl, coverDir, coverPath) => {
     try {
         await fs.mkdir(coverDir, { recursive: true });
         await fs.access(coverPath);
-        console.log('Cover image already exists, skipping download...');
+        console.log('Cover image already exists:', coverPath);
     } catch {
         await downloadImage(coverImageUrl, coverPath);
         console.log('Cover image downloaded successfully');
     }
 };
 
+// Main function to scrape comic metadata and chapters
 const scrapeComicMeta = async (url) => {
     try {
         const data = await fetchData(url);
@@ -117,6 +119,7 @@ const scrapeComicMeta = async (url) => {
     }
 };
 
+// Function to scrape chapter images
 const scrapeChapterImages = async (url, comicSlug) => {
     try {
         const chapterNumMatch = url.match(/chapter-(\d+)/);
@@ -127,7 +130,7 @@ const scrapeChapterImages = async (url, comicSlug) => {
 
         try {
             await fs.access(chapterDir);
-            console.log(`Chapter ${chapterNum} already exists, skipping...`);
+            console.log(`Chapter ${chapterNum} already exists.`);
             return;
         } catch {
             await fs.mkdir(chapterDir, { recursive: true });
@@ -146,6 +149,7 @@ const scrapeChapterImages = async (url, comicSlug) => {
     }
 };
 
+// Main execution function
 const main = async () => {
     try {
         await fs.mkdir(COMICS_DIR, { recursive: true });
@@ -158,16 +162,16 @@ const main = async () => {
 
         const { comicSlug, comicMeta } = await scrapeComicMeta(comicUrl);
 
-        // if (comicMeta && comicSlug) {
-        //     saveComicMetadata(comicMeta, comicSlug);
+        if (comicMeta && comicSlug) {
+            await saveComicMetadata(comicMeta, comicSlug);
 
-        //     // Scrape chapters
-        //     await Promise.all(
-        //         Array.from({ length: 3 }, (_, i) =>
-        //             scrapeChapterImages(`${baseComicUrl}chapter/${comicSlug}-chapter-0${i + 1}-bahasa-indonesia/`, comicSlug)
-        //         )
-        //     );
-        // }
+            // Scrape chapters concurrently
+            await Promise.all(
+                Array.from({ length: 3 }, (_, i) =>
+                    scrapeChapterImages(`${baseComicUrl}chapter/${comicSlug}-chapter-0${i + 1}-bahasa-indonesia/`, comicSlug)
+                )
+            );
+        }
     } catch (error) {
         console.error('Scraping failed:', error.message);
     }
