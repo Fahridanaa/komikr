@@ -10,6 +10,7 @@ import {
 } from "@/utils/helpers";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Image } from "astro:assets";
 
 export async function getStaticPaths() {
 	const comics = await getCollection("comics");
@@ -78,15 +79,19 @@ const comicSlug = lowerCaseKebab(title);
 			</div>
 		</header>
 
-		<div class="container max-w-4xl mx-auto px-4 py-8">
+		<div class="container max-w-4xl mx-auto py-8">
 			<div>
 				{
 					Array.from({ length: imageCount }).map((_, i) => (
-						<img
+						<Image
 							src={`/src/assets/comics/${comicSlug}/chapter-${String(chapterNumber).padStart(2, "0")}/${String(i + 1).padStart(3, "0")}.jpg`}
 							alt={`Page ${i + 1}`}
+							width={400}
+							height={600}
 							class="w-full"
-							loading={i === 0 ? "eager" : "lazy"}
+							draggable="false"
+							style={{ userSelect: "none" }}
+							loading={i <= 1 ? "eager" : "lazy"}
 						/>
 					))
 				}
