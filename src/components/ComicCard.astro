@@ -2,7 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import type { ComicMeta } from "@/models/comic";
 import { Image } from "astro:assets";
-import { lowerCaseKebab } from "@/utils/helpers";
+import { getChapterCount, lowerCaseKebab } from "@/utils/helpers";
 import { Badge } from "./ui/badge";
 
 interface Props {
@@ -12,8 +12,9 @@ interface Props {
 }
 
 const { comic, className, isLazyImage = false } = Astro.props;
-const { title, type, chapter } = comic;
-const latestChapters = [chapter, chapter - 1].filter((ch) => ch > 0);
+const { title, type } = comic;
+const chapterCount = getChapterCount(lowerCaseKebab(title));
+const latestChapters = [chapterCount, chapterCount - 1].filter((ch) => ch > 0);
 ---
 
 <Card className={`group overflow-hidden ${className}`}>
