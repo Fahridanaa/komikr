@@ -13,7 +13,9 @@ const comics: ComicMeta[] = comicEntries.map(
 );
 ---
 
-<Layout title="Komikr - Tempat Baca Komik">
+<Layout
+	title="Komikr - Tempat Baca Komik"
+	className="max-w-[1224px] mx-auto md:p-8 p-4 flex flex-1 flex-col gap-4 md:gap-8 ">
 	<div class="hero-section">
 		<CarouselPage client:load comics={comics} />
 		<SliderSection title="Popular Comic Update">
