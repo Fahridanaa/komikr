@@ -1,0 +1,121 @@
+---
+import "@/styles/globals.css";
+import Layout from "@/layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import type { Comic } from "@/models/comic";
+import {
+	getChapterCount,
+	lowerCaseKebab,
+	getChapterImageCount,
+} from "@/utils/helpers";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
+export async function getStaticPaths() {
+	const comics = await getCollection("comics");
+
+	return comics.flatMap((comic: Comic) => {
+		return Array.from({ length: getChapterCount(comic.id) }, (_, i) => ({
+			params: {
+				slug: comic.id,
+				number: (i + 1).toString().padStart(2, "0"),
+			},
+			props: { comic, chapterNumber: i + 1 },
+		}));
+	});
+}
+
+const { comic, chapterNumber } = Astro.props;
+const { title } = comic.data;
+
+const chapterCount = getChapterCount(comic.id);
+const imageCount = getChapterImageCount(comic.id, chapterNumber);
+const prevChapter = chapterNumber > 1 ? chapterNumber - 1 : null;
+const nextChapter = chapterNumber < chapterCount ? chapterNumber + 1 : null;
+const comicSlug = lowerCaseKebab(title);
+---
+
+<Layout title={`${title} - Chapter ${chapterNumber}`}>
+	<main class="min-h-screen bg-background">
+		<header
+			class="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+			<div class="container flex h-14 items-center justify-between">
+				<a
+					href={`/comics/${comicSlug}`}
+					class="flex items-center gap-2">
+					<Button variant="ghost" size="sm">
+						<ChevronLeft className="w-4 h-4 mr-2" />
+						Back to Series
+					</Button>
+				</a>
+				<div class="flex items-center gap-2">
+					{
+						prevChapter && (
+							<a
+								href={`/comics/${comicSlug}/chapter-${prevChapter}`}>
+								<Button variant="outline" size="sm">
+									<ChevronLeft className="w-4 h-4 mr-2" />
+									Previous
+								</Button>
+							</a>
+						)
+					}
+					<span class="text-sm font-medium"
+						>Chapter {chapterNumber}</span
+					>
+					{
+						nextChapter && (
+							<a
+								href={`/comics/${comicSlug}/chapter-${nextChapter}`}>
+								<Button variant="outline" size="sm">
+									Next
+									<ChevronRight className="w-4 h-4 ml-2" />
+								</Button>
+							</a>
+						)
+					}
+				</div>
+			</div>
+		</header>
+
+		<div class="container max-w-4xl mx-auto px-4 py-8">
+			<div>
+				{
+					Array.from({ length: imageCount }).map((_, i) => (
+						<img
+							src={`/src/assets/comics/${comicSlug}/chapter-${String(chapterNumber).padStart(2, "0")}/${String(i + 1).padStart(3, "0")}.jpg`}
+							alt={`Page ${i + 1}`}
+							class="w-full"
+							loading={i === 0 ? "eager" : "lazy"}
+						/>
+					))
+				}
+			</div>
+
+			<div class="flex items-center justify-end gap-4 mt-8">
+				{
+					prevChapter && (
+						<a
+							href={`/comics/${comicSlug}/chapter-${String(prevChapter).padStart(2, "0")}`}>
+							<Button variant="outline" size="lg">
+								<ChevronLeft className="w-4 h-4 mr-2" />
+								Previous Chapter
+							</Button>
+						</a>
+					)
+				}
+				{
+					nextChapter && (
+						<a
+							href={`/comics/${comicSlug}/chapter-${String(nextChapter).padStart(2, "0")}`}>
+							<Button variant="outline" size="lg">
+								Next Chapter
+								<ChevronRight className="w-4 h-4 ml-2" />
+							</Button>
+						</a>
+					)
+				}
+			</div>
+		</div>
+	</main>
+</Layout>
