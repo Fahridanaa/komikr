@@ -8,6 +8,7 @@ import { MetaInfo } from "@/components/ComicMetaInfo";
 import { GenreList } from "@/components/ComicGenreList";
 import Synopsis from "@/components/Synopsis.astro";
 import { lowerCaseKebab } from "@/utils/helpers";
+import { ChapterList } from "@/components/ChapterList";
 
 export type Props = {
 	frontmatter: ComicMeta;
@@ -62,7 +63,9 @@ const {
 
 						<Synopsis synopsis={synopsis} />
 
-						<!-- Slot for additional content -->
+						<Separator className="my-4" />
+
+						<ChapterList title={title} slug={slug} />
 						<slot />
 					</div>
 				</div>
