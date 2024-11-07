@@ -1,5 +1,6 @@
 ---
 import { Badge } from "@/components/ui/badge";
+import { Image } from "astro:assets";
 
 interface Props {
 	title: string;
@@ -18,10 +19,13 @@ const {
 
 <div class="space-y-4">
 	<div class="aspect-[3/4] overflow-hidden rounded-lg">
-		<img
+		<Image
 			src={coverImage}
 			alt={`${title} Cover`}
 			class="object-cover w-full h-full hover:scale-105 transition-transform duration-300"
+			width={300}
+			height={400}
+			loading={"eager"}
 		/>
 	</div>
 	<div class="space-y-2">
