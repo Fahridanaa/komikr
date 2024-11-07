@@ -26,6 +26,11 @@ export async function getStaticPaths() {
 	});
 }
 
+interface Props {
+	comic: Comic;
+	chapterNumber: number;
+}
+
 const { comic, chapterNumber } = Astro.props;
 const { title } = comic.data;
 
