@@ -21,7 +21,7 @@ const ComicOverviewList: React.FC<ComicOverviewListProps> = ({ comics }) => {
 					<div className="flex items-center justify-center">
 						<figure className="overflow-hidden rounded-md max-w-24 h-auto">
 							<img
-								src={`/src/assets/comics/${comic.title
+								src={`/assets/comics/${comic.title
 									.toLowerCase()
 									.replace(/\s/g, "-")}/cover.jpg`}
 								alt="comic"

@@ -93,7 +93,7 @@ const comicSlug = lowerCaseKebab(title);
 				{
 					Array.from({ length: imageCount }).map((_, i) => (
 						<Image
-							src={`/src/assets/comics/${comicSlug}/chapter-${String(chapterNumber).padStart(2, "0")}/${String(i + 1).padStart(3, "0")}.jpg`}
+							src={`/assets/comics/${comicSlug}/chapter-${String(chapterNumber).padStart(2, "0")}/${String(i + 1).padStart(3, "0")}.jpg`}
 							alt={`Page ${i + 1}`}
 							width={400}
 							height={600}

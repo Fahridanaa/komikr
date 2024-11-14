@@ -22,7 +22,7 @@ const latestChapters = [chapterCount, chapterCount - 1].filter((ch) => ch > 0);
 		<a href={`/comics/${lowerCaseKebab(title)}`}>
 			<div class="relative aspect-[3/4] overflow-hidden rounded-t-lg">
 				<Image
-					src={`/src/assets/comics/${lowerCaseKebab(title)}/cover.jpg`}
+					src={`/assets/comics/${lowerCaseKebab(title)}/cover.jpg`}
 					alt={title}
 					class="object-cover object-center w-full h-full transition-transform duration-300 group-hover:scale-110"
 					width={300}
@@ -44,7 +44,7 @@ const latestChapters = [chapterCount, chapterCount - 1].filter((ch) => ch > 0);
 		{
 			latestChapters.map((ch) => (
 				<a
-					href={`/comics/${lowerCaseKebab(title)}/chapter-${ch}`}
+					href={`/comics/${lowerCaseKebab(title)}/chapter-${String(ch).padStart(2, "0")}`}
 					class="block">
 					<div class="flex justify-between py-1 text-sm hover:bg-muted rounded px-2 transition-colors">
 						<span>Chapter {ch}</span>

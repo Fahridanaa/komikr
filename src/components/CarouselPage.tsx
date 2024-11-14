@@ -70,9 +70,7 @@ export default function CarouselPage({ comics }: CarouselPageProps) {
 }
 
 function FeaturedComic({ comic }: { comic: ComicMeta }) {
-	const coverPath = `/src/assets/comics/${lowerCaseKebab(
-		comic.title
-	)}/cover.jpg`;
+	const coverPath = `/assets/comics/${lowerCaseKebab(comic.title)}/cover.jpg`;
 
 	return (
 		<Card className="relative overflow-hidden">

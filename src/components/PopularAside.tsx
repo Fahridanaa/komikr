@@ -51,7 +51,7 @@ function PopularList({ comics }: { comics: ComicMeta[] }) {
 						className="flex gap-4 group"
 					>
 						<img
-							src={`/src/assets/comics/${lowerCaseKebab(
+							src={`/assets/comics/${lowerCaseKebab(
 								comic.title
 							)}/cover.jpg`}
 							alt={comic.title}

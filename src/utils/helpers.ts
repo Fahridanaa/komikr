@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 export function getChapterCount(comicId: string): number {
-  const comicPath = path.join(process.cwd(), 'src', 'assets', 'comics', comicId);
+  const comicPath = path.join(process.cwd(), 'public', 'assets', 'comics', comicId);
 
   try {
     // Get all directories that match "chapter-*" pattern
@@ -22,7 +22,7 @@ export function getChapterCount(comicId: string): number {
 export function getChapterImageCount(comicId: string, chapterNumber: number): number {
   const chapterPath = path.join(
     process.cwd(),
-    'src',
+    'public',
     'assets',
     'comics',
     comicId,
