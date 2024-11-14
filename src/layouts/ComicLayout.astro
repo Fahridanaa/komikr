@@ -16,17 +16,8 @@ export type Props = {
 };
 
 const { frontmatter, slug } = Astro.props;
-const {
-	title,
-	author,
-	type,
-	chapter,
-	release,
-	updatedOn,
-	status,
-	genres,
-	synopsis,
-} = frontmatter;
+const { title, author, type, release, updatedOn, status, genres, synopsis } =
+	frontmatter;
 ---
 
 <Layout title={title}>
@@ -51,7 +42,6 @@ const {
 							<MetaInfo
 								client:load
 								author={author}
-								chapter={chapter}
 								release={release}
 								updatedOn={updatedOn}
 							/>

@@ -157,15 +157,16 @@ const main = async () => {
 
         const baseComicUrl = 'https://komikcast.cz/';
 
-        // Example comic URL
-        const comicUrl = `${baseComicUrl}komik/myst-might-mayhem/`;
+        // ini diganti sesuai judul komik yang mau di scrape
+        const title = 'myst-might-mayhem';
+
+        const comicUrl = `${baseComicUrl}komik/${title}/`;
 
         const { comicSlug, comicMeta } = await scrapeComicMeta(comicUrl);
 
         if (comicMeta && comicSlug) {
             await saveComicMetadata(comicMeta, comicSlug);
 
-            // Scrape chapters concurrently
             await Promise.all(
                 Array.from({ length: 3 }, (_, i) =>
                     scrapeChapterImages(`${baseComicUrl}chapter/${comicSlug}-chapter-0${i + 1}-bahasa-indonesia/`, comicSlug)

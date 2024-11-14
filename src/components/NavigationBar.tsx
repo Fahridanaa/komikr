@@ -22,17 +22,17 @@ interface Props {
 	isAuth?: boolean;
 }
 
-const NavigationBar: React.FC<Props> = ({ logo, items, isAuth = true }) => {
+const NavigationBar: React.FC<Props> = ({ logo, items, isAuth = false }) => {
 	return (
 		<>
 			<nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
-				<a
+				{/* <a
 					href="/"
 					className="flex items-center gap-2 text-lg font-semibold md:text-base"
 				>
 					<img src={logo} alt="Komikr" className="h-6 w-6" />
 					<span className="sr-only">Komikr</span>
-				</a>
+				</a> */}
 				<ul className="flex ml-6 gap-4">
 					{items.map((item) => (
 						<li key={item.name}>
