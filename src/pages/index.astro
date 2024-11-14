@@ -7,7 +7,7 @@ import type { ComicMeta } from "@/models/comic";
 
 const comicEntries = await getCollection("comics");
 const comics: ComicMeta[] = comicEntries.map(
-	(entry) => entry.data as unknown as ComicMeta
+	(entry: { data: unknown }) => entry.data as unknown as ComicMeta
 );
 ---
 

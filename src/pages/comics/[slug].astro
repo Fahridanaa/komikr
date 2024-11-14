@@ -16,7 +16,6 @@ type Props = {
 };
 
 const { entry } = Astro.props;
-const { synopsis } = await entry.data;
 ---
 
 <ComicLayout frontmatter={entry.data} slug={entry.id}>

@@ -9,7 +9,7 @@ import type { ComicMeta } from "@/models/comic";
 
 const comicEntries = await getCollection("comics");
 const comics: ComicMeta[] = comicEntries.map(
-	(entry) => entry.data as ComicMeta
+	(entry: { data: any }) => entry.data as ComicMeta
 );
 ---
 

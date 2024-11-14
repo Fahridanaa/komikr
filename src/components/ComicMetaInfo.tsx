@@ -1,4 +1,4 @@
-import { BookOpen, Calendar, Clock, User2 } from "lucide-react";
+import { Calendar, Clock, User2 } from "lucide-react";
 import { format } from "date-fns";
 
 interface MetaInfoProps {

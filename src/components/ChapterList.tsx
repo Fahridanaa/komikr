@@ -4,11 +4,10 @@ import { Button } from "./ui/button";
 import { Clock, BookOpen } from "lucide-react";
 
 interface ChapterListProps {
-	title: string;
 	slug: string;
 }
 
-export function ChapterList({ title, slug }: ChapterListProps) {
+export function ChapterList({ slug }: ChapterListProps) {
 	const totalChapters = getChapterCount(slug);
 
 	const chapters = Array.from({ length: totalChapters }, (_, i) => ({
